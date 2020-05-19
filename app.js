@@ -11,7 +11,13 @@ const io = socketio.listen(server);
 io.sockets.on('connection',(socket)=>{
     console.log('User connected');
 
-    socket.on('disconnect',()=>{
+    socket.on('sayHi',(data)=>{
+        console.log('Hiii from %s %s merhaba',data.name,data.language);
+    });
+
+    socket.emit('give me five', {name: "Ahmet", age:23}); // socket.emit pushes an event
+
+    socket.on('disconnect',()=>{ // socket.on takes an specified event and show result when client sent
         console.log("User left");
     })
 });

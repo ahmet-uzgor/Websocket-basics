@@ -6,6 +6,10 @@
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
     <script>
         const socket = io.connect('http://localhost:3000/');
+        socket.emit('sayHi' , {language: "Turkish" , name: "Ahmet"});
+        socket.on('give me five', (data)=>{
+            alert("hey I am " + data.name + " My age is" +data.age);
+        })
     </script>
 </head>
 <body>
