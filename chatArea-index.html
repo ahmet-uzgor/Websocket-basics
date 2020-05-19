@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Websocket structure</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script>
+        $(()=>{
+            const socket = io.connect("http://localhost:3000/chatArea");
+            
+            $('button').on('click',()=>{
+                socket.emit('writeName',{name: "Ahmet"});
+            });
+            socket.on('distributeName',(data)=>{
+                    $('body').append(`${data.name } <br/>`)
+                });
+        })
+    </script>
+</head>
+<body>
+    <p>Welcome to the Chat area </p>
+    <br>
+    <button>Hello</button>
+</body>
+</html>
+
