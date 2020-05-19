@@ -8,6 +8,19 @@ server.listen(3000);
 
 const io = socketio.listen(server);
 
+// Chat Area socket events listening
+const chatSpace = io.of('/chatArea');
+chatSpace.on('connection',(socket)=>{
+    console.log("chat area client connected");
+
+    socket.on('writeName',(data)=>{
+        console.log('My name is '+data.name);
+        chatSpace.emit('distributeName',{name: data.name});
+    })
+})
+
+
+// Rootspace socket events listening
 io.sockets.on('connection',(socket)=>{
     console.log('User connected');
 
