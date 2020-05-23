@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Websocket structure</title>
+    <style>
+        #leaveRoom{
+            display: none;
+        }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script>
+        $(()=>{
+            const socket = io.connect("http://localhost:3000/");
+            $('#joinRoom').on('click',()=>{
+                socket.emit('joinRoom',{name: $('#roomName').val()});
+            });
+
+            socket.on('newJoin', (data)=>{
+                $('#roomName , #joinRoom').attr('disabled','disabled');
+                $('#leaveRoom').show();
+                $('#counts').html(`Number of users in the room: ${data.count}`);
+                $('#logs').html('You entered room')
+            });
+
+            socket.on('leftSocket', (data)=>{
+                $('#roomName , #joinRoom').removeAttr('disabled','disabled');
+                $('#leaveRoom').hide();
+                $('#counts').empty();
+                $('#logs').html(data.message)
+            });
+
+            $('#leaveRoom').on('click' , ()=>{
+                socket.emit('leaveRoom' , {name: $('roomName').val()});
+            });
+
+            socket.on('leftUser' , (data)=>{
+                $('#counts').html(`Number of users in the room: ${data.count}`);
+            })
+        });
+    </script>
+</head>
+<body>
+    <p>Welcome to the Chat Room </p>
+    <input id="roomName"/>
+    <button id="joinRoom">Join</button>
+    <button id="leaveRoom">Leave</button>
+    <div id="counts"></div>
+    <div id="logs"></div>
+</body>
+</html>
